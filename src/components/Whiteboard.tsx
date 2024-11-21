@@ -73,7 +73,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
     }
   }, [mode]);
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (fabricRef.current) {
       // Get the whiteboard image as base64
       const base64Image = fabricRef.current.toDataURL({
@@ -82,23 +82,8 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
         multiplier: 2, // Adjust resolution
       });
 
-      try {
-        // Send the base64 image to the backend
-        const response = await fetch('http://localhost:5000/api/process-whiteboard', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: base64Image }), // Send the base64 image in the body
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log('Processed Data (From Backend):', result);
-        } else {
-          console.error('Error processing data:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error sending data to backend:', error);
-      }
+      // Send the base64 image to the parent component
+      onSave(base64Image);
     }
   };
 
