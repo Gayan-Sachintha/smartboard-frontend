@@ -73,11 +73,32 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
     }
   }, [mode]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (fabricRef.current) {
-      const jsonData = fabricRef.current.toJSON();
-      console.log('Canvas JSON Data:', jsonData); 
-      onSave(JSON.stringify(jsonData));
+      // Get the whiteboard image as base64
+      const base64Image = fabricRef.current.toDataURL({
+        format: 'png', // Set image format to PNG
+        quality: 1, // Optional: Adjust quality if needed
+        multiplier: 2, // Adjust resolution
+      });
+
+      try {
+        // Send the base64 image to the backend
+        const response = await fetch('http://localhost:5000/api/process-whiteboard', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: base64Image }), // Send the base64 image in the body
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Processed Data (From Backend):', result);
+        } else {
+          console.error('Error processing data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error sending data to backend:', error);
+      }
     }
   };
 
