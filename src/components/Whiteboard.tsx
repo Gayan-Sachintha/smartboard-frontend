@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as fabric from 'fabric';
+import Toolbar from './Toolbar';
 
 interface WhiteboardProps {
-  onSave: (data: string) => void; 
+  onSave: (data: string) => void;
 }
 
 const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricRef = useRef<fabric.Canvas | null>(null);
+
+  const [brushSize, setBrushSize] = useState(5);
+  const [brushColor, setBrushColor] = useState('#000000');
+  const [brushType, setBrushType] = useState('PencilBrush');
   const [mode, setMode] = useState<'draw' | 'erase'>('draw');
 
   useEffect(() => {
@@ -17,9 +22,12 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
       });
 
       const canvas = fabricRef.current;
-      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-      canvas.freeDrawingBrush.width = 5;
-      canvas.freeDrawingBrush.color = 'black';
+      if (!canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+      }
+
+      canvas.freeDrawingBrush.width = brushSize;
+      canvas.freeDrawingBrush.color = brushColor;
     }
 
     return () => {
@@ -27,67 +35,77 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
     };
   }, []);
 
-  const handleModeChange = (newMode: 'draw' | 'erase') => {
-    setMode(newMode);
-
+  useEffect(() => {
     if (fabricRef.current) {
-      if (newMode === 'draw') {
-        fabricRef.current.isDrawingMode = true;
-        fabricRef.current.freeDrawingBrush = new fabric.PencilBrush(fabricRef.current);
-        fabricRef.current.freeDrawingBrush.color = 'black';
-        fabricRef.current.freeDrawingBrush.width = 5;
-      } else if (newMode === 'erase') {
-        fabricRef.current.isDrawingMode = false;
-        fabricRef.current.on('mouse:down', (opt) => {
-          const canvas = fabricRef.current;
-          const pointer = canvas?.getPointer(opt.e);
-          const objects = canvas?.getObjects().filter((object) => object.containsPoint(pointer!));
+      const canvas = fabricRef.current;
 
-          objects?.forEach((object) => canvas?.remove(object));
+      if (brushType === 'PencilBrush') {
+        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+      } else if (brushType === 'CircleBrush') {
+        canvas.freeDrawingBrush = new fabric.CircleBrush(canvas);
+      } else if (brushType === 'SprayBrush') {
+        canvas.freeDrawingBrush = new fabric.SprayBrush(canvas);
+      }
+
+      if (canvas.freeDrawingBrush) {
+        canvas.freeDrawingBrush.color = brushColor;
+        canvas.freeDrawingBrush.width = brushSize;
+      }
+    }
+  }, [brushSize, brushColor, brushType]);
+
+  useEffect(() => {
+    if (fabricRef.current) {
+      const canvas = fabricRef.current;
+
+      if (mode === 'draw') {
+        canvas.isDrawingMode = true;
+      } else if (mode === 'erase') {
+        canvas.isDrawingMode = false;
+
+        canvas.on('mouse:down', (opt) => {
+          const pointer = canvas.getPointer(opt.e);
+          const objects = canvas.getObjects().filter((object) => object.containsPoint(pointer));
+
+          objects.forEach((object) => canvas.remove(object));
         });
       }
     }
-  };
+  }, [mode]);
 
   const handleSave = () => {
     if (fabricRef.current) {
       const jsonData = fabricRef.current.toJSON();
+      console.log('Canvas JSON Data:', jsonData); 
       onSave(JSON.stringify(jsonData));
     }
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
-      <div className="flex space-x-4">
-        <button
-          onClick={() => handleModeChange('draw')}
-          className={`px-4 py-2 rounded ${
-            mode === 'draw' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-          }`}
-        >
-          Draw
-        </button>
-        <button
-          onClick={() => handleModeChange('erase')}
-          className={`px-4 py-2 rounded ${
-            mode === 'erase' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
-          }`}
-        >
-          Erase
-        </button>
-        <button
-          onClick={handleSave}
-          className="px-4 py-2 rounded bg-green-500 text-white"
-        >
-          Save
-        </button>
-      </div>
+    <div className="flex flex-col items-center space-y-6">
+      {/* Toolbar for controls */}
+      <Toolbar
+        onBrushSizeChange={setBrushSize}
+        onBrushColorChange={setBrushColor}
+        onBrushTypeChange={setBrushType}
+        onModeChange={setMode}
+      />
+
+      {/* Canvas */}
       <canvas
         ref={canvasRef}
         width={800}
         height={600}
         className="border-2 border-gray-300 shadow-lg"
       ></canvas>
+
+      {/* Save Button */}
+      <button
+        onClick={handleSave}
+        className="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600"
+      >
+        Save
+      </button>
     </div>
   );
 };

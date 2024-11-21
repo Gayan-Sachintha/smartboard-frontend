@@ -19,4 +19,5 @@ const whiteboardSlice = createSlice({
 });
 
 export const { saveWhiteboardData } = whiteboardSlice.actions;
+
 export default whiteboardSlice.reducer;
