@@ -77,9 +77,9 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
     if (fabricRef.current) {
       // Get the whiteboard image as base64
       const base64Image = fabricRef.current.toDataURL({
-        format: 'png', // Set image format to PNG
-        quality: 1, // Optional: Adjust quality if needed
-        multiplier: 2, // Adjust resolution
+        format: 'png', 
+        quality: 1,
+        multiplier: 2, 
       });
 
       // Send the base64 image to the parent component
@@ -89,7 +89,6 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
 
   return (
     <div className="flex flex-col items-center space-y-6">
-      {/* Toolbar for controls */}
       <Toolbar
         onBrushSizeChange={setBrushSize}
         onBrushColorChange={setBrushColor}
@@ -97,7 +96,6 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
         onModeChange={setMode}
       />
 
-      {/* Canvas */}
       <canvas
         ref={canvasRef}
         width={800}
@@ -105,7 +103,6 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
         className="border-2 border-gray-300 shadow-lg"
       ></canvas>
 
-      {/* Save Button */}
       <button
         onClick={handleSave}
         className="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600"

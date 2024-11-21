@@ -46,10 +46,8 @@ const WhiteboardPage: React.FC = () => {
       <h1 className="text-3xl font-bold text-gray-800">Interactive Whiteboard</h1>
       <Whiteboard onSave={handleSave} />
 
-      {/* Loading Indicator */}
       {loading && <p className="text-blue-500">Processing the whiteboard data... Please wait.</p>}
 
-      {/* Error Message */}
       {error && <p className="text-red-500">Error: {error}</p>}
 
       {/* Display Detected Text */}
