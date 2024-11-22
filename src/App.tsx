@@ -3,13 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import WhiteboardPage from './pages/WhiteboardPage';
 import './index.css';
+import Navbar from './components/Navbar';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <nav>
-        <Link to="/">Home</Link> | <Link to="/whiteboard">Whiteboard</Link>
-      </nav>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/whiteboard" element={<WhiteboardPage />} />
