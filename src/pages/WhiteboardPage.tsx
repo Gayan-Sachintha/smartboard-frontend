@@ -39,7 +39,7 @@ const WhiteboardPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div className="pt-16 min-h-screen flex bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
       {/* Main content */}
       <div className="flex-1 flex flex-col items-center py-8 space-y-6">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">Smart Whiteboard</h1>
@@ -51,9 +51,9 @@ const WhiteboardPage: React.FC = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed right-0 top-0 h-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-lg border-l border-gray-200 dark:border-gray-700
-          transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
-      >
+  className={`fixed right-0 top-0 h-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-lg border-l border-gray-200 dark:border-gray-700 z-30
+    transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
+>
         <div className="flex justify-between items-center p-4 border-b border-gray-300 dark:border-gray-700">
           <h2 className="text-xl font-semibold">Results</h2>
           <button
@@ -74,22 +74,33 @@ const WhiteboardPage: React.FC = () => {
           {responseData && responseData.contentType === 'math' && (
             <div>
               <h3 className="text-lg font-semibold">Math Equation</h3>
-              <p><strong>Message:</strong> {responseData.message}</p>
-              <p><strong>Original:</strong> {responseData.original}</p>
-              <p><strong>Simplified:</strong> {responseData.simplified}</p>
-              <p><strong>Evaluated:</strong> {responseData.evaluated}</p>
+              <p>
+                <strong>Message:</strong> {responseData.message}
+              </p>
+              <p>
+                <strong>Original:</strong> {responseData.original}
+              </p>
+              <p>
+                <strong>Simplified:</strong> {responseData.simplified?.toString() || 'N/A'}
+              </p>
+              <p>
+                <strong>Evaluated:</strong> {responseData.evaluated?.toString() || 'N/A'}
+              </p>
               <div>
                 <h3 className="text-lg font-semibold">Steps</h3>
                 <ul className="list-disc pl-5">
-                  {responseData.steps.map((step: { step: string; result: string }, index: number) => (
+                  {responseData.steps?.map((step: { step: string; result: any }, index: number) => (
                     <li key={index}>
-                      <p><strong>{step.step}:</strong> {step.result}</p>
+                      <p>
+                        <strong>{step.step}:</strong> {step.result?.toString() || 'N/A'}
+                      </p>
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
           )}
+
 
           {responseData && responseData.contentType === 'text' && (
             <div>
