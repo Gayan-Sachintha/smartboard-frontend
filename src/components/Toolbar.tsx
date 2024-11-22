@@ -124,7 +124,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
           onClick={onSave}
           className="flex items-center justify-center px-8 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-lg hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800 focus:ring-2 focus:ring-green-300 transition-transform transform hover:scale-105"
         >
-          Save
+          Get Answer
         </button>
       </div>
     </div>
