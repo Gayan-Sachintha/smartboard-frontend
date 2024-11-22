@@ -16,6 +16,9 @@ const Navbar: React.FC = () => {
           <Link to="/whiteboard" className="text-gray-800 dark:text-gray-300 hover:underline">
             Whiteboard
           </Link>
+          <Link to="/whiteboardkids" className="text-gray-800 dark:text-gray-300 hover:underline">
+            Whiteboard-Kids
+          </Link>
           <ThemeToggle />
         </div>
       </div>
