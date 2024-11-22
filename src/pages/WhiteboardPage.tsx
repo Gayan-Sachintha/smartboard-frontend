@@ -51,9 +51,9 @@ const WhiteboardPage: React.FC = () => {
 
       {/* Sidebar */}
       <div
-  className={`fixed right-0 top-0 h-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-lg border-l border-gray-200 dark:border-gray-700 z-30
+        className={`fixed right-0 top-0 h-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-lg border-l border-gray-200 dark:border-gray-700 z-30
     transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}
->
+      >
         <div className="flex justify-between items-center p-4 border-b border-gray-300 dark:border-gray-700">
           <h2 className="text-xl font-semibold">Results</h2>
           <button
@@ -65,55 +65,71 @@ const WhiteboardPage: React.FC = () => {
         </div>
         <div className="p-4 space-y-4 overflow-y-auto h-full">
           {detectedText && (
-            <div>
-              <h3 className="text-lg font-semibold">Detected Text</h3>
-              <p>{detectedText}</p>
+            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Detected Text</h3>
+              <p className="text-gray-600 dark:text-gray-300">{detectedText}</p>
             </div>
           )}
 
           {responseData && responseData.contentType === 'math' && (
-            <div>
-              <h3 className="text-lg font-semibold">Math Equation</h3>
-              <p>
-                <strong>Message:</strong> {responseData.message}
-              </p>
-              <p>
-                <strong>Original:</strong> {responseData.original}
-              </p>
-              <p>
-                <strong>Simplified:</strong> {responseData.simplified?.toString() || 'N/A'}
-              </p>
-              <p>
-                <strong>Evaluated:</strong> {responseData.evaluated?.toString() || 'N/A'}
-              </p>
-              <div>
-                <h3 className="text-lg font-semibold">Steps</h3>
-                <ul className="list-disc pl-5">
-                  {responseData.steps?.map((step: { step: string; result: any }, index: number) => (
-                    <li key={index}>
-                      <p>
-                        <strong>{step.step}:</strong> {step.result?.toString() || 'N/A'}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
+            <div className="space-y-4">
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Math Equation</h3>
+                <p>
+                  <strong className="text-gray-800 dark:text-gray-200">Message:</strong>{' '}
+                  <span className="text-gray-600 dark:text-gray-300">{responseData.message}</span>
+                </p>
+                <p>
+                  <strong className="text-gray-800 dark:text-gray-200">Original:</strong>{' '}
+                  <span className="text-gray-600 dark:text-gray-300">{responseData.original}</span>
+                </p>
+                <p>
+                  <strong className="text-gray-800 dark:text-gray-200">Simplified:</strong>{' '}
+                  <span className="text-gray-600 dark:text-gray-300">
+                    {responseData.simplified?.toString() || 'N/A'}
+                  </span>
+                </p>
+                <p>
+                  <strong className="text-gray-800 dark:text-gray-200">Evaluated:</strong>{' '}
+                  <span className="text-gray-600 dark:text-gray-300">
+                    {responseData.evaluated?.toString() || 'N/A'}
+                  </span>
+                </p>
               </div>
+
+              {responseData.steps && (
+                <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Steps</h3>
+                  <ul className="list-disc pl-5 text-gray-600 dark:text-gray-300">
+                    {responseData.steps.map((step: { step: string; result: any }, index: number) => (
+                      <li key={index}>
+                        <p>
+                          <strong className="text-gray-800 dark:text-gray-200">{step.step}:</strong>{' '}
+                          {step.result?.toString() || 'N/A'}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
 
-
           {responseData && responseData.contentType === 'text' && (
-            <div>
-              <h3 className="text-lg font-semibold">Plain Text</h3>
-              <p>{responseData.detectedText}</p>
+            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Plain Text</h3>
+              <p className="text-gray-600 dark:text-gray-300">{responseData.detectedText}</p>
             </div>
           )}
 
           {!responseData && (
-            <p className="text-gray-500 dark:text-gray-400">No processed results available yet.</p>
+            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow">
+              <p className="text-gray-500 dark:text-gray-400">No processed results available yet.</p>
+            </div>
           )}
         </div>
       </div>
+
     </div>
   );
 };
