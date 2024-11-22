@@ -94,6 +94,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
         onBrushColorChange={setBrushColor}
         onBrushTypeChange={setBrushType}
         onModeChange={setMode}
+        onSave={handleSave} // Pass the save handler to the Toolbar
       />
 
       <canvas
@@ -102,13 +103,6 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ onSave }) => {
         height={600}
         className="border-2 border-gray-300 shadow-lg"
       ></canvas>
-
-      <button
-        onClick={handleSave}
-        className="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600"
-      >
-        Save
-      </button>
     </div>
   );
 };

@@ -5,6 +5,7 @@ interface ToolbarProps {
   onBrushColorChange: (color: string) => void;
   onBrushTypeChange: (type: string) => void;
   onModeChange: (mode: 'draw' | 'erase') => void;
+  onSave: () => void; // Save handler
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -12,6 +13,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onBrushColorChange,
   onBrushTypeChange,
   onModeChange,
+  onSave,
 }) => {
   const [brushSize, setBrushSize] = useState(5);
   const [brushColor, setBrushColor] = useState('#000000');
@@ -90,6 +92,16 @@ const Toolbar: React.FC<ToolbarProps> = ({
           className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
           Erase
+        </button>
+      </div>
+
+      {/* Save Button */}
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={onSave}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          Save
         </button>
       </div>
     </div>
