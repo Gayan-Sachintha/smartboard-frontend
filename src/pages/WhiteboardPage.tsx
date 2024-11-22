@@ -43,7 +43,7 @@ const WhiteboardPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-8 space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">Interactive Whiteboard</h1>
+      <h1 className="text-3xl font-bold text-gray-800">Smart Whiteboard</h1>
       <Whiteboard onSave={handleSave} />
 
       {loading && <p className="text-blue-500">Processing the whiteboard data... Please wait.</p>}
